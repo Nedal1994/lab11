@@ -16,6 +16,9 @@ let imgIndex2;
 let imgIndex3;
 
 let products=[];
+let namesArr=[];
+let votesArr=[];
+let shownArr=[];
 
 function Items(name,src)
 {
@@ -24,6 +27,7 @@ function Items(name,src)
     this.vote=0;
     this.shown=0;
     products.push(this)
+    namesArr.push(this.name)
 }
 
 new Items('Bag','img/bag.jpg')
@@ -70,6 +74,9 @@ function render()
     img1.src=products[imgIndex1].source;
     img2.src=products[imgIndex2].source;
     img3.src=products[imgIndex3].source;
+    products[imgIndex1].shown++;
+    products[imgIndex2].shown++;
+    products[imgIndex3].shown++;
 
 }
 
@@ -109,25 +116,91 @@ function userClick(event)
 
             function showList()
             {
+                showChart()
+
                 let list=document.getElementById('results')
                 for(let i=0;i<products.length;i++)
             {
                 let listItem=document.createElement('li')
                 list.appendChild(listItem)
 
-                listItem.textContent=`${products[i].name} has ${products[i].vote} votes`
+                listItem.textContent=`${products[i].name} has ${products[i].vote} votes shown ${products[i].shown} times`
             }
             buttonElement.removeEventListener('click',showList)
             }
-
-            
 
         img1.removeEventListener('click',userClick)
         img2.removeEventListener('click',userClick)
         img3.removeEventListener('click',userClick)
 
         }
-        
-
 }
 render()
+
+function showChart()
+{
+    console.log(products)
+    for(let i=0;i<products.length;i++)
+{
+   votesArr.push(products[i].vote)
+   shownArr.push(products[i].shown)
+
+}
+    console.log(votesArr)
+var ctx = document.getElementById('chart').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: namesArr,
+        datasets: [{
+            label: '# of Votes',
+            data: votesArr,
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        },
+        {
+            label: '# of Shown images',
+            data: shownArr,
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1}
+    ]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+}
