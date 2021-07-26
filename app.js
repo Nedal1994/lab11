@@ -1,6 +1,7 @@
 'use strict';
 
 let imageElement=document.getElementById('images')
+let buttonElement=document.getElementById('button')
 let img1=document.getElementById('image1')
 let img2=document.getElementById('image2')
 let img3=document.getElementById('image3')
@@ -21,6 +22,7 @@ function Items(name,src)
     this.name=name;
     this.source=src;
     this.vote=0;
+    this.shown=0;
     products.push(this)
 }
 
@@ -60,9 +62,10 @@ function render()
     imgIndex2=getNumbers();
     imgIndex3=getNumbers();
 
-    while(imgIndex1===imgIndex2===imgIndex3)
+    while(imgIndex1===imgIndex3 || imgIndex1 ===imgIndex2 || imgIndex3 === imgIndex2)
     {
-        imgIndex3=getNumbers()
+        imgIndex1=getNumbers()
+        imgIndex2=getNumbers()
     }
     img1.src=products[imgIndex1].source;
     img2.src=products[imgIndex2].source;
@@ -101,14 +104,23 @@ function userClick(event)
     }
     else
         {
-            let list=document.getElementById('results')
-            for(let i=0;i<products.length;i++)
+            buttonElement.hidden=false;
+            buttonElement.addEventListener('click',showList)
+
+            function showList()
+            {
+                let list=document.getElementById('results')
+                for(let i=0;i<products.length;i++)
             {
                 let listItem=document.createElement('li')
                 list.appendChild(listItem)
 
                 listItem.textContent=`${products[i].name} has ${products[i].vote} votes`
             }
+            buttonElement.removeEventListener('click',showList)
+            }
+
+            
 
         img1.removeEventListener('click',userClick)
         img2.removeEventListener('click',userClick)
