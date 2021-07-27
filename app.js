@@ -60,16 +60,19 @@ console.log(getNumbers())
 
 console.log(products)
 
+let shownPic=[]
+
 function render()
 {
     imgIndex1=getNumbers();
     imgIndex2=getNumbers();
     imgIndex3=getNumbers();
 
-    while(imgIndex1===imgIndex3 || imgIndex1 ===imgIndex2 || imgIndex3 === imgIndex2)
+    while(imgIndex1===imgIndex3 || imgIndex1 ===imgIndex2 || imgIndex3 === imgIndex2 || shownPic.includes(imgIndex1) || shownPic.includes(imgIndex2) || shownPic.includes(imgIndex3))
     {
         imgIndex1=getNumbers()
         imgIndex2=getNumbers()
+        imgIndex3=getNumbers()
     }
     img1.src=products[imgIndex1].source;
     img2.src=products[imgIndex2].source;
@@ -77,6 +80,8 @@ function render()
     products[imgIndex1].shown++;
     products[imgIndex2].shown++;
     products[imgIndex3].shown++;
+
+    shownPic=[imgIndex1,imgIndex2,imgIndex3]
 
 }
 
